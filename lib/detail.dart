@@ -1,0 +1,47 @@
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'dart:io';
+
+class DetailWidget extends StatefulWidget {
+  String filePath;
+
+  DetailWidget({Key key,this.filePath}): super(key: key);
+
+
+
+  @override
+  State<StatefulWidget> createState() {
+    return _DetailState();
+  }
+}
+
+class _DetailState extends State<DetailWidget> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        appBar: AppBar(
+          title: Text('Detail'),
+          actions: <Widget>[
+            IconButton(
+              icon: Icon(Icons.share),
+              onPressed: () {
+                final channel =
+                    const MethodChannel('channel:me.alfian.share/share');
+                channel.invokeMethod('shareFile', 'image.png');
+              },
+            )
+          ],
+        ),
+        body: Container(
+          child: SizedBox(
+            height: 500.0,
+            child: new Center(
+                child: widget.filePath == null
+                    ? Text('No Image')
+                    : Container(
+                        child: Image.file(File(widget.filePath),
+                            fit: BoxFit.fitWidth))),
+          ),
+        ));
+  }
+}
